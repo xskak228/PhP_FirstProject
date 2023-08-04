@@ -32,7 +32,15 @@ class News
         $this->title = $title;
         $this->content = $content;
         $this->category = $category;
-        $this->author = $author;
+
+        # точно не уверен, так ли это делать надо
+        if (($author instanceof User) === true) {
+            $this->author = $author;
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public function AddComment($comment) {$this->comments[] = $comment;}
@@ -67,15 +75,15 @@ class Guest {
 }
 
 $user = new User("test@test.ru", "1234567890", "testname");
-$user->ChangeUserName("NewNick");
-$user->ChangeEmail("new@new.ru");
-
+# $user->ChangeUserName("NewNick");
+# $user->ChangeEmail("new@new.ru");
+#
 $guest = new Guest("1234567890"); # и это id генерится по своим правилам
-
+#
 $news = new News("Test", "123", "test", $user);
-$news->EditingNews("Test2", "321", "test2", $user);
-# есть сомнения в правильности изменения, в плане, "$user"
-
-$comment = new Comments("123123", $user);
-
-$news->AddComment($comment);
+# $news->EditingNews("Test2", "321", "test2", $user);
+# # есть сомнения в правильности изменения, в плане, "$user"
+#
+# $comment = new Comments("123123", $user);
+#
+# $news->AddComment($comment);
