@@ -29,12 +29,11 @@ class News
 
     public function __construct($title, $content, $category, $author)
     {
-        $this->title = $title;
-        $this->content = $content;
-        $this->category = $category;
-
         # точно не уверен, так ли это делать надо
         if (($author instanceof User) === true) {
+            $this->title = $title;
+            $this->content = $content;
+            $this->category = $category;
             $this->author = $author;
             return true;
         } else {
