@@ -2,6 +2,7 @@
 
 class User
 {
+    public $uid = uniqid();
     public $email;
     public $password;
     public $username;
@@ -45,10 +46,14 @@ class News
     public function AddComment($comment) {$this->comments[] = $comment;}
     public function EditingNews($newTitle, $newContent, $newCategory, $author)
     {
-        $this->title = $newTitle;
-        $this->content = $newContent;
-        $this->category = $newCategory;
-        $this->author = $author;
+        if ($this->author === $author) {
+            $this->title = $newTitle;
+            $this->content = $newContent;
+            $this->category = $newCategory;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
@@ -59,30 +64,39 @@ class Comments
 
     public function __construct($content, $author)
     {
-        $this->content = $content;
-        $this->author = $author;
+        if ((($author instanceof User) === true) or ($author instanceof Guest) === true) {
+            $this->content = $content;
+            $this->author = $author;
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
 
-class Guest {
-    # елси бы я разробатывал гостя, то добавил бы id у него
-    # не знаю, хорошая практика или нет...
-    public $userId;
+class Guest
+{
+    public $uid = uniqid();
+    public $email;
+    public $username;
 
-    public function __construct($userId) {$this->userId = $userId;}
+    public function __construct($email, $username)
+    {
+        $this->email = $email;
+        $this->username = $username;
+    }
 
 }
 
-$user = new User("test@test.ru", "1234567890", "testname");
-# $user->ChangeUserName("NewNick");
-# $user->ChangeEmail("new@new.ru");
-#
-$guest = new Guest("1234567890"); # и это id генерится по своим правилам
-#
+$user = new User("test@user.ru", "1234567890", "testname");
+$user->ChangeUserName("NewNick");
+$user->ChangeEmail("new@new.ru");
+
+$guest = new Guest("test@guest.ru", "testname");
+
 $news = new News("Test", "123", "test", $user);
-# $news->EditingNews("Test2", "321", "test2", $user);
-# # есть сомнения в правильности изменения, в плане, "$user"
-#
-# $comment = new Comments("123123", $user);
-#
-# $news->AddComment($comment);
+$news->EditingNews("Test2", "321", "test2", $user);
+
+$comment = new Comments("123123", $user);
+$news->AddComment($comment);
