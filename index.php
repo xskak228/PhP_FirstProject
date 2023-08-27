@@ -1,36 +1,34 @@
 <?php
 
-class User
-{
+class User {
     public $uid = uniqid();
     public $email;
     public $password;
     public $username;
 
-    public function __construct($email, $password, $username)
-    {
+    public function __construct($email, $password, $username) {
        $this->email = $email;
        $this->password = $password;
        $this->username = $username;
     }
 
-    # не буду учитывать "предыдуший email и ник"
-    public function ChangeEmail($newEmail) {$this->email = $newEmail;}
-    public function ChangeUserName($newUserName) {$this->username = $newUserName;}
+    public function ChangeEmail($newEmail) {
+        $this->email = $newEmail;
+    }
+    public function ChangeUserName($newUserName) {
+        $this->username = $newUserName;
+    }
 
 }
 
-class News
-{
+class News {
     public $content;
     public $title;
     public $author;
     public $category;
     public $comments = [];
 
-    public function __construct($title, $content, $category, $author)
-    {
-        # точно не уверен, так ли это делать надо
+    public function __construct($title, $content, $category, $author) {
         if (($author instanceof User) === true) {
             $this->title = $title;
             $this->content = $content;
@@ -43,9 +41,10 @@ class News
 
     }
 
-    public function AddComment($comment) {$this->comments[] = $comment;}
-    public function EditingNews($newTitle, $newContent, $newCategory, $author)
-    {
+    public function AddComment($comment) {
+        $this->comments[] = $comment;
+    }
+    public function EditingNews($newTitle, $newContent, $newCategory, $author) {
         if ($this->author === $author) {
             $this->title = $newTitle;
             $this->content = $newContent;
@@ -57,13 +56,11 @@ class News
     }
 }
 
-class Comments
-{
+class Comments {
     public $content;
     public $author;
 
-    public function __construct($content, $author)
-    {
+    public function __construct($content, $author) {
         if ((($author instanceof User) === true) or ($author instanceof Guest) === true) {
             $this->content = $content;
             $this->author = $author;
@@ -75,14 +72,12 @@ class Comments
     }
 }
 
-class Guest
-{
+class Guest {
     public $uid = uniqid();
     public $email;
     public $username;
 
-    public function __construct($email, $username)
-    {
+    public function __construct($email, $username) {
         $this->email = $email;
         $this->username = $username;
     }
